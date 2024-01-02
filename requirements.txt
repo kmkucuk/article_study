@@ -1,0 +1,4 @@
+wand
+pandas
+numpy
+openpyxl
