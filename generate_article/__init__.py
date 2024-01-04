@@ -32,20 +32,32 @@ p = Path(".")
 files = deque([x for x in p.iterdir()])
 current_path = Path(".")
 
+print(files)
 
 articles = []
 
 while files:
     _file = files.popleft()
+    print('**********')
+    print("_file: ", _file)
 
     if _file.is_dir():
         files.extend(_file.iterdir())
+        print('skip if directory')
+        # print("\n_file.isdir() correct : ", files.extend(_file.iterdir()))
         continue
+    # print('**********')
+    # print('_file.resolve().parent: ',str(_file.resolve().parent))
 
     if "output" in str(_file.resolve().parent):
+        print('\nskip if output')
         continue
+    # print('**********')
+    # print('_file.name: ', _file.name)
+    # print('_file.suffix: ', _file.suffix)
 
     if _file.name.startswith("article") and _file.suffix == ".xlsx":
+        print('\narticle is added to list')
         articles.append(
             (
                 _file.resolve(),

@@ -52,17 +52,17 @@ def get_header_pos(header_indices):
             ]
         elif header_position == 1:
             pos = [
-                indent_from_robot * 0.96,
+                indent_from_robot * 1,
                 previous_pos[1] + roundPosition(size_blueRect[1]),
             ]
         elif header_position == 2:
             pos = [
-                indent_from_robot * 0.8,
+                indent_from_robot * 1,
                 roundPosition(previous_pos[1] + size_blueRect[1] * 0.8),
             ]
         else:
             pos = [
-                indent_from_robot * 1.1,
+                indent_from_robot * 1,
                 roundPosition(previous_pos[1] + size_blueRect[1]),
             ]
 
@@ -126,7 +126,7 @@ def generate(article_info: ArticleInfo):
                 last_header = header_postions[-1]
 
                 date_position = [
-                    indent_from_robot,
+                    roundPosition(indent_from_robot * 1),
                     roundPosition(last_header[1] * 1.25),
                 ]
 
