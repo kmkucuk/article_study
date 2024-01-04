@@ -1,6 +1,4 @@
 from generate_article import (
-    article_sheet,
-    textIndices,
     roundPosition,
     eval_metrics,
     word_wrap,
@@ -8,7 +6,6 @@ from generate_article import (
     wrap_width,
 )
 
-import time 
 from generate_article.draw_robot import indent_from_robot
 from generate_article.word_wrap import word_wrap
 
@@ -30,12 +27,15 @@ def find_next_bracket(word_array, start):
     raise RuntimeError("Unable to find next bracket")
 
 
-def draw_text(image, draw, text_position, has_links) -> list:
+def draw_text(image, draw, article_info, text_position, has_links) -> list:
+    textIndices = article_info.textIndices
+    article_sheet = article_info.article_sheet
+
     link_bounds = []
     howManyParagraphs = len(textIndices)
     parit = 0
     for text_index in textIndices:
-        parit = parit+1
+        parit = parit + 1
         text = article_sheet["content"][text_index].strip()
         split_text = text.split(" ")
         num_words = len(split_text)
@@ -106,9 +106,12 @@ def draw_text(image, draw, text_position, has_links) -> list:
             joinedWords = "".join(previousWords)
             parapgrah = word_wrap(image, draw, joinedWords, wrap_width, wrap_height)
 
-            partext  = str(round((parit/howManyParagraphs)*100))
-            wordtext = str(round(((texti+1)/len(range(0, num_words)))*100))
-            print("Progress: paragraphs: %"+ partext+"\t words: %"+wordtext+"\t", end="\r")
+            partext = str(round((parit / howManyParagraphs) * 100))
+            wordtext = str(round(((texti + 1) / len(range(0, num_words))) * 100))
+            print(
+                "Progress: paragraphs: %" + partext + "\t words: %" + wordtext + "\t",
+                end="\r",
+            )
 
             draw.text(
                 roundPosition(text_position[0]),
@@ -134,4 +137,3 @@ def draw_text(image, draw, text_position, has_links) -> list:
                 text_position[0] = roundPosition(indent_from_robot)
                 text_position[1] += word_height * 2
     return link_bounds
-    
