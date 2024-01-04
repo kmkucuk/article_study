@@ -5,10 +5,8 @@ from pandas import DataFrame
 import os
 
 from generate_article import (
+    ArticleInfo,
     roundPosition,
-    headerIndices,
-    dateIndex,
-    authorIndex,
     page_indent_horizontal,
     page_indent_vertical,
     img_height,
@@ -39,46 +37,57 @@ pos_blueHeader = [
     roundPosition(size_blueRect[1] * 2 / 3),
 ]
 
-header_postions = []
 
-previous_pos = pos_blueHeader
+def get_header_pos(header_indices):
+    header_postions = []
 
-for header_position in headerIndices:
-    pos = []
-    if header_position == 0:
-        pos = [
-            indent_from_robot * 1.1,
-            previous_pos[1] + roundPosition(size_blueRect[1] * 0.6),
-        ]
-    elif header_position == 1:
-        pos = [
-            indent_from_robot * 0.96,
-            previous_pos[1] + roundPosition(size_blueRect[1]),
-        ]
-    elif header_position == 2:
-        pos = [
-            indent_from_robot * 0.8,
-            roundPosition(previous_pos[1] + size_blueRect[1] * 0.8),
-        ]
-    else:
-        pos = [
-            indent_from_robot * 1.1,
-            roundPosition(previous_pos[1] + size_blueRect[1]),
-        ]
+    previous_pos = pos_blueHeader
 
-    previous_pos = pos
-    header_postions.append(pos)
+    for header_position in header_indices:
+        pos = []
+        if header_position == 0:
+            pos = [
+                indent_from_robot * 1.1,
+                previous_pos[1] + roundPosition(size_blueRect[1] * 0.6),
+            ]
+        elif header_position == 1:
+            pos = [
+                indent_from_robot * 0.96,
+                previous_pos[1] + roundPosition(size_blueRect[1]),
+            ]
+        elif header_position == 2:
+            pos = [
+                indent_from_robot * 0.8,
+                roundPosition(previous_pos[1] + size_blueRect[1] * 0.8),
+            ]
+        else:
+            pos = [
+                indent_from_robot * 1.1,
+                roundPosition(previous_pos[1] + size_blueRect[1]),
+            ]
+
+        previous_pos = pos
+        header_postions.append(pos)
+    return header_postions
 
 
 parentPath = os.getcwd()
 os.chdir(parentPath)
 
 
-def generate(article_sheet, font_sheet, passage_name):
+def generate(article_info: ArticleInfo):
+    font_sheet = article_info.font_sheet
+    article_sheet = article_info.article_sheet
+    passage_name = article_info.passage_name
+    dateIndex = article_info.dateIndex
+    authorIndex = article_info.authorIndex
+
+    header_postions = get_header_pos(article_info.headerIndices)
+
     for _, data in font_sheet.iterrows():
         font_name = data["Font"]
         kerning = data["Kerning"]
-        print('\nfont: '+font_name+"\n")
+        print("\nfont: " + font_name + "\n")
         with Image(
             width=img_width,
             height=img_height,
@@ -99,8 +108,7 @@ def generate(article_sheet, font_sheet, passage_name):
                 # draw header's blue rectangle
                 draw_header(
                     draw_with_links,
-                    headerIndices,
-                    article_sheet,
+                    article_info,
                     pos_blueRect,
                     size_blueRect,
                     header_postions,
@@ -108,8 +116,7 @@ def generate(article_sheet, font_sheet, passage_name):
 
                 draw_header(
                     draw_without_links,
-                    headerIndices,
-                    article_sheet,
+                    article_info,
                     pos_blueRect,
                     size_blueRect,
                     header_postions,
@@ -160,7 +167,9 @@ def generate(article_sheet, font_sheet, passage_name):
                 # draw photo
                 def draw_photo(draw, image):
                     draw.push()
-                    caption_position = draw_image(image, draw, author_position[1] * 1.1)
+                    caption_position = draw_image(
+                        image, draw, article_info, author_position[1] * 1.1
+                    )
                     draw(image)
                     draw.pop()
 
@@ -177,7 +186,9 @@ def generate(article_sheet, font_sheet, passage_name):
                         roundPosition(caption_position[1] * 1.1),
                     ]
 
-                    link_bounds = draw_text(image, draw, text_position, has_links)
+                    link_bounds = draw_text(
+                        image, draw, article_info, text_position, has_links
+                    )
 
                     draw(image)
 

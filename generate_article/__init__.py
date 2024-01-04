@@ -1,4 +1,4 @@
-from collections import deque
+from collections import deque, namedtuple
 from pathlib import Path
 import os
 import pandas as pd
@@ -64,42 +64,20 @@ while files:
 print(f"found {len(articles)} article sheets")
 
 
-article_sheet   = pd.read_excel(articles[0][0])
-font_sheet      = pd.read_excel(articles[0][1])
-
-
-# print("size of excel sheet", numpy.shape(article_sheet))
-## ARTICLE SHEET VARIABLES ##
-# get headers of the excel file
-sheet_headers = article_sheet.columns.tolist()
-# print(sheet_headers)
-# # get set ID column
-# column_type         = 'type'
-# # get color column
-# column_color        = 'color'
-# # get format column
-# column_format       = 'format'
-# # get weight column
-# column_weight       = 'weight'
-# # get font column
-# column_font         = 'font'
-# # get content column
-# column_content      = 'content'
-
-headerIndices   = getIndices(article_sheet["type"], ["header"])
-textIndices     = getIndices(article_sheet["type"], ["text"])
-dateIndex       = getIndices(article_sheet["type"], ["date"])[0]
-photoIndex      = getIndices(article_sheet["type"], ["photo"])[0]
-captionIndex    = getIndices(article_sheet["type"], ["caption"])[0]
-authorIndex     = getIndices(article_sheet["type"], ["author"])[0]
-
-
-## FONT SHEET VARIABLES ##
-font_headers    = font_sheet.columns
-# get font name columns
-fontColumn      = font_headers[0]
-# get scale columns
-fontColumn      = font_headers[1]
+ArticleInfo = namedtuple(
+    "ArticleInfo",
+    [
+        "article_sheet",
+        "font_sheet",
+        "passage_name",
+        "headerIndices",
+        "textIndices",
+        "dateIndex",
+        "photoIndex",
+        "captionIndex",
+        "authorIndex",
+    ],
+)
 
 # Create a black canvas img_widthximg_height pixels (1024x768)
 img_width = 1024
