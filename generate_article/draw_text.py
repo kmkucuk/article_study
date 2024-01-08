@@ -1,13 +1,10 @@
 from generate_article import (
     roundPosition,
     eval_metrics,
-    word_wrap,
-    wrap_height,
     wrap_width,
 )
 
 from generate_article.draw_robot import indent_from_robot
-from generate_article.word_wrap import word_wrap
 
 ###########################
 # !TEXT SIZE MULTIPLIERS! #
@@ -89,7 +86,7 @@ def draw_text(image, draw, article_info, text_position, has_links) -> list:
             if text_position[0] * paragraph_right_padding >= wrap_width:
                 text_position[0] = roundPosition(indent_from_robot)
 
-                text_position[1] += roundPosition(word_height)
+                text_position[1] += roundPosition(word_height * 1.09)
 
             partext = str(((parit / howManyParagraphs) * 100) // 1)
             wordtext = str((((texti + 1) / num_words) * 100) // 1)
@@ -119,6 +116,6 @@ def draw_text(image, draw, article_info, text_position, has_links) -> list:
 
             if texti == num_words - 1:
                 text_position[0] = roundPosition(indent_from_robot)
-                text_position[1] += word_height * 2
+                text_position[1] += word_height * 1.8
 
     return link_bounds
