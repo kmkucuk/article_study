@@ -1,13 +1,10 @@
 from generate_article import (
     roundPosition,
     eval_metrics,
-    word_wrap,
-    wrap_height,
     wrap_width,
 )
 
 from generate_article.draw_robot import indent_from_robot
-from generate_article.word_wrap import word_wrap
 
 ###########################
 # !TEXT SIZE MULTIPLIERS! #
@@ -40,37 +37,32 @@ def draw_text(image, draw, article_info, text_position, has_links) -> list:
         split_text = text.split(" ")
         num_words = len(split_text)
 
-        parapgrah = ""
-        previousWords = []
-        line_width = []
+        evaluating_bracket = False
 
-        closing_bracket = -1
-        buffer = []
-        # print("completed paragraphs %"+str(round((parit/howManyParagraphs)*100)), end="\r", flush=True)
         for texti in range(0, num_words):
-            if texti < closing_bracket:
-                buffer.append(split_text[texti].strip())
-                continue
-                # current word
-                # add space to end of words
+            currentWord = split_text[texti].strip()
 
-            if texti == closing_bracket:
-                buffer.append(split_text[texti].strip())
-                currentWord = " ".join(buffer).replace("[", "").replace("]", "").strip()
-                buffer.clear()
-                closing_bracket = -1
+            if "[" in currentWord:
+                evaluating_bracket = True
+                currentWord = currentWord.replace("[", "")
+
+                # if the bracket is empty, skip it
+                if len(currentWord.strip()) == 0:
+                    continue
+
+            if evaluating_bracket:
                 current_color = "blue"
+                if "]" in currentWord:
+                    currentWord = currentWord.replace("]", "")
+                    evaluating_bracket = False
+                    # if the bracket is empty, skip it
+                    if len(currentWord.strip()) == 0:
+                        continue
             else:
                 current_color = "black"
-                currentWord: str = split_text[texti]
 
             if texti < num_words - 1:
                 currentWord += " "
-
-            if "[" in currentWord:
-                buffer.append(currentWord.strip())
-                closing_bracket = find_next_bracket(split_text, texti)
-                continue
 
             if not has_links:
                 current_color = "black"
@@ -87,27 +79,17 @@ def draw_text(image, draw, article_info, text_position, has_links) -> list:
 
             word_width, word_height = eval_metrics(currentWord, draw, image)
 
-            # add this word's width to the line's width
-            line_width.append(word_width)
-
             # add new line if wrap width is exceeded
             # Multiple text width to add extra padding
-            if text_position[0] * 1.05 >= wrap_width:
-                line_width = []
-                line_width.append(word_width)
+            paragraph_right_padding = 1.07
+
+            if text_position[0] * paragraph_right_padding >= wrap_width:
                 text_position[0] = roundPosition(indent_from_robot)
 
-                text_position[1] += roundPosition(word_height)
+                text_position[1] += roundPosition(word_height * 1.09)
 
-                # append the current word to incomplete passage
-            previousWords.append(currentWord)
-
-            # apply wrapping to incomplete passage to get Y axis of next word printing
-            joinedWords = "".join(previousWords)
-            parapgrah = word_wrap(image, draw, joinedWords, wrap_width, wrap_height)
-
-            partext = str(round((parit / howManyParagraphs) * 100))
-            wordtext = str(round(((texti + 1) / len(range(0, num_words))) * 100))
+            partext = str(((parit / howManyParagraphs) * 100) // 1)
+            wordtext = str((((texti + 1) / num_words) * 100) // 1)
             print(
                 "Progress: paragraphs: %" + partext + "\t words: %" + wordtext + "\t",
                 end="\r",
@@ -133,7 +115,7 @@ def draw_text(image, draw, article_info, text_position, has_links) -> list:
             text_position[0] = roundPosition(word_width + text_position[0])
 
             if texti == num_words - 1:
-                previousWords = []
                 text_position[0] = roundPosition(indent_from_robot)
-                text_position[1] += word_height * 2
+                text_position[1] += word_height * 1.8
+
     return link_bounds
