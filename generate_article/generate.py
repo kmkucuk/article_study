@@ -216,7 +216,7 @@ def generate(article_info: ArticleInfo):
                 os.chdir(save_directory)
             # print('Current font: '+fontName+'\t set ID:'+setid+'\n')
 
-            passageImageName = f"{font_name}"
+            passageImageName = font_name
 
             image_with_links.save(
                 filename=os.path.join(
@@ -230,11 +230,11 @@ def generate(article_info: ArticleInfo):
                 )
             )
 
-            df: DataFrame = DataFrame(
+            link_metrics: DataFrame = DataFrame(
                 link_bounds, columns=["text", "x", "y", "width", "height"]
             )
 
-            df.to_excel(
+            link_metrics.to_excel(
                 os.path.join(
                     os.getcwd(),
                     f"{passage_name}_{passageImageName}.xlsx",

@@ -1,8 +1,5 @@
 from collections import deque, namedtuple
 from pathlib import Path
-import os
-import pandas as pd
-import numpy
 
 
 def getIndices(yourList, searchElements):
