@@ -84,7 +84,9 @@ def draw_text(image, draw, article_info, text_position, has_links) -> list:
 
             # add new line if wrap width is exceeded
             # Multiple text width to add extra padding
-            if text_position[0] * 1.05 >= wrap_width:
+            paragraph_right_padding = 1.07
+
+            if text_position[0] * paragraph_right_padding >= wrap_width:
                 text_position[0] = roundPosition(indent_from_robot)
 
                 text_position[1] += roundPosition(word_height)
