@@ -14,7 +14,7 @@ from generate_article import (
     img_width,
 )
 
-from generate_article.draw_header import draw_header
+from generate_article.draw_header import draw_header 
 from generate_article.draw_image import draw_image
 
 from generate_article.draw_text import draw_text
@@ -205,7 +205,7 @@ def generate(article_info: ArticleInfo):
                 # set_images
             pathSlash = os.path.sep
 
-            save_directory = pathSlash.join((parentPath, "output", font_name))
+            save_directory = pathSlash.join((parentPath, "output", "all"))
 
             # check if save path exists, if not, create one
             if not os.path.isdir(save_directory):
@@ -237,7 +237,7 @@ def generate(article_info: ArticleInfo):
             link_metrics.to_excel(
                 os.path.join(
                     os.getcwd(),
-                    f"{passage_name}_{passageImageName}.xlsx",
+                    f"{passage_name}_{passageImageName}_links.xlsx",
                 ),
                 index=False,
             )
