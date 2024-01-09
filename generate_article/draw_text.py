@@ -4,7 +4,7 @@ from generate_article import (
     wrap_width,
 )
 
-from generate_article.draw_robot import indent_from_robot
+from generate_article.draw_robot import indent_from_robot, robot_start_without_indent
 
 ###########################
 # !TEXT SIZE MULTIPLIERS! #
@@ -14,14 +14,6 @@ from generate_article.draw_robot import indent_from_robot
 # interlude of 3-experiments (Rashid's) study (kurtulusmertkucuk@gmail.com, date: 18/05/2023).
 passageSizeMultiplier = 1.2
 textSizeInPixels = 16
-
-
-def find_next_bracket(word_array, start):
-    """Find the next bracket in the word array."""
-    for i in range(start, len(word_array)):
-        if "]" in word_array[i]:
-            return i
-    raise RuntimeError("Unable to find next bracket")
 
 
 def draw_text(image, draw, article_info, text_position, has_links) -> list:
@@ -88,10 +80,10 @@ def draw_text(image, draw, article_info, text_position, has_links) -> list:
 
             # add new line if wrap width is exceeded
             # Multiple text width to add extra padding
-            paragraph_right_padding = 1.07
+            paragraph_right_padding = robot_start_without_indent
 
-            if text_position[0] * paragraph_right_padding >= wrap_width:
-                text_position[0] = roundPosition(indent_from_robot)
+            if text_position[0] + paragraph_right_padding >= wrap_width:
+                text_position[0] = roundPosition(robot_start_without_indent)
 
                 text_position[1] += roundPosition(word_height * 1.09)
 
@@ -148,7 +140,7 @@ def draw_text(image, draw, article_info, text_position, has_links) -> list:
             text_position[0] = roundPosition(word_width + text_position[0])
 
             if texti == num_words - 1:
-                text_position[0] = roundPosition(indent_from_robot)
+                text_position[0] = roundPosition(robot_start_without_indent)
                 text_position[1] += word_height * 1.8
 
     return link_bounds

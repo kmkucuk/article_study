@@ -7,6 +7,8 @@ from wand.image import Image
 size_robotLogo = [roundPosition(wrap_width * 0.1), 55]
 
 indent_from_robot = roundPosition(page_indent_horizontal + 1.3 * size_robotLogo[0])
+robot_start = roundPosition(page_indent_horizontal + size_robotLogo[0] / 2)
+robot_start_without_indent = robot_start
 
 
 def draw_robot(image, pos_robotLogo):

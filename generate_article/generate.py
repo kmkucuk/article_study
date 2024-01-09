@@ -1,5 +1,6 @@
 from wand.image import Image
 from wand.drawing import Drawing
+from wand.display import display
 from pandas import DataFrame
 
 import os
@@ -19,7 +20,12 @@ from generate_article.draw_image import draw_image
 
 from generate_article.draw_text import draw_text
 
-from generate_article.draw_robot import draw_robot, indent_from_robot, size_robotLogo
+from generate_article.draw_robot import (
+    draw_robot,
+    indent_from_robot,
+    robot_start_without_indent,
+    robot_start,
+)
 
 # Blue header rectangle position
 # rectangle comes after the robot logo and there is a space between them
@@ -48,17 +54,17 @@ def get_header_pos(header_indices):
         if header_position == 0:
             pos = [
                 indent_from_robot * 1.1,
-                previous_pos[1] + roundPosition(size_blueRect[1] * 0.6),
+                previous_pos[1] + roundPosition(size_blueRect[1] * 0.8),
             ]
         elif header_position == 1:
             pos = [
                 indent_from_robot * 1,
-                previous_pos[1] + roundPosition(size_blueRect[1]),
+                previous_pos[1] + roundPosition(size_blueRect[1] * 1.2),
             ]
         elif header_position == 2:
             pos = [
                 indent_from_robot * 1,
-                roundPosition(previous_pos[1] + size_blueRect[1] * 0.8),
+                roundPosition(previous_pos[1] + size_blueRect[1] * 0.55),
             ]
         else:
             pos = [
@@ -86,6 +92,9 @@ def generate(article_info: ArticleInfo):
 
     for _, data in font_sheet.iterrows():
         font_name = data["Font"]
+        if font_name == "Times":
+            font_name = "Times New Roman"
+
         kerning = data["Kerning"]
         print("\nfont: " + font_name + "\n")
         with Image(
@@ -99,7 +108,10 @@ def generate(article_info: ArticleInfo):
             draw_robot(image_without_links, pos_robotLogo)
 
             with Drawing() as draw_with_links, Drawing() as draw_without_links:
-                draw_with_links.font, draw_without_links.font = font_name, font_name
+                draw_with_links.font_family, draw_without_links.font_family = (
+                    font_name,
+                    font_name,
+                )
                 draw_with_links.text_kerning, draw_without_links.text_kerning = (
                     kerning,
                     kerning,
@@ -108,6 +120,7 @@ def generate(article_info: ArticleInfo):
                 # draw header's blue rectangle
                 draw_header(
                     draw_with_links,
+                    image_with_links,
                     article_info,
                     pos_blueRect,
                     size_blueRect,
@@ -116,6 +129,7 @@ def generate(article_info: ArticleInfo):
 
                 draw_header(
                     draw_without_links,
+                    image_without_links,
                     article_info,
                     pos_blueRect,
                     size_blueRect,
@@ -126,15 +140,16 @@ def generate(article_info: ArticleInfo):
                 last_header = header_postions[-1]
 
                 date_position = [
-                    roundPosition(indent_from_robot * 1),
-                    roundPosition(last_header[1] * 1.25),
+                    roundPosition(robot_start),
+                    roundPosition(last_header[1] * 1.15),
                 ]
 
                 for draw in [draw_without_links, draw_with_links]:
                     draw.push()
 
                     draw.font_weight = article_sheet["weight"][dateIndex]
-                    draw.font_size = 18
+                    draw.font_family = "Roboto"
+                    draw.font_size = 20
                     draw.text(
                         date_position[0],
                         date_position[1],
@@ -144,14 +159,15 @@ def generate(article_info: ArticleInfo):
                     draw.pop()
 
                 author_position = [
-                    roundPosition(date_position[0]),
-                    roundPosition(date_position[1] * 1.08),
+                    roundPosition(date_position[0] * 1.2),
+                    roundPosition(date_position[1] * 1.1),
                 ]
 
                 for draw in [draw_without_links, draw_with_links]:
                     draw.push()
                     draw.font_weight = article_sheet["weight"][authorIndex]
-                    draw.font_size = 18
+                    draw.font_family = "Times New Roman"
+                    draw.font_size = 22
                     draw.text(
                         author_position[0],
                         author_position[1],
@@ -182,7 +198,7 @@ def generate(article_info: ArticleInfo):
                 def _draw_text(draw, image, has_links):
                     draw.push()
                     text_position = [
-                        roundPosition(caption_position[0] * 2 - indent_from_robot),
+                        roundPosition(robot_start_without_indent),
                         roundPosition(caption_position[1] * 1.1),
                     ]
 

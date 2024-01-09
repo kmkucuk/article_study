@@ -1,7 +1,7 @@
 from wand.color import Color
 from wand.drawing import Drawing
 
-from generate_article import ArticleInfo, roundPosition
+from generate_article import ArticleInfo, roundPosition, center_text
 
 
 def draw_rectangle(draw, pos_left, pos_right, roi_width, roi_height):
@@ -16,6 +16,7 @@ def draw_rectangle(draw, pos_left, pos_right, roi_width, roi_height):
 
 def draw_header(
     draw,
+    image,
     article_info: ArticleInfo,
     pos_blueRect,
     size_blueRect,
@@ -33,16 +34,26 @@ def draw_header(
 
     # loop over headers and draw them on image
     for index, header_position in enumerate(header_postions):
+        draw.push()
         location = header_indices[index]
         # header text
-        currentHeader = str(article_sheet["content"][location])
+        currentHeader = article_sheet["content"][location]
         # assign font size
-        if header_position == 0:
-            draw.font_size = 30
-        elif header_position == 1:
-            draw.font_size = 25
+
+        x_position = header_position[0]
+
+        if index == 0:
+            draw.font_size = 35
+            draw.font_family = "Arial Narrow"
+        elif index == 1:
+            draw.font_size = 35
+            draw.font_family = "Times New Roman"
+            x_position = center_text(draw, image, currentHeader)
         else:
-            draw.font_size = 20
+            draw.font_size = 22
+            draw.font_family = "Times New Roman"
+            x_position = center_text(draw, image, currentHeader)
+
         # assign letter spacing
         draw.text_kerning = 0
         # text color
@@ -55,7 +66,8 @@ def draw_header(
         draw.font_weight = int(str(article_sheet["weight"][location]))
 
         draw.text(
-            roundPosition(header_position[0]),
+            roundPosition(x_position),
             roundPosition(header_position[1]),
             currentHeader,
         )
+        draw.pop()
