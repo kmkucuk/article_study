@@ -55,7 +55,6 @@ def draw_image(image, draw, article_info: ArticleInfo, y_position) -> list[int]:
     draw.font_style = article_sheet["style"][captionIndex]
     draw.fill_color = article_sheet["color"][captionIndex]
 
-    print(article_sheet["content"][captionIndex])
     caption_position_x = roundPosition(
         center_text(draw, image, article_sheet["content"][captionIndex])
     )
