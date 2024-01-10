@@ -43,10 +43,10 @@ def draw_header(
         x_position = header_position[0]
 
         if index == 0:
-            draw.font_size = 35
+            draw.font_size = 30
             draw.font_family = "Arial Narrow"
         elif index == 1:
-            draw.font_size = 35
+            draw.font_size = 30
             draw.font_family = "Times New Roman"
             x_position = center_text(draw, image, currentHeader)
         else:

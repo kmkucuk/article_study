@@ -15,7 +15,7 @@ from generate_article import (
     img_width,
 )
 
-from generate_article.draw_header import draw_header 
+from generate_article.draw_header import draw_header
 from generate_article.draw_image import draw_image
 
 from generate_article.draw_text import draw_text
@@ -94,6 +94,8 @@ def generate(article_info: ArticleInfo):
         font_name = data["Font"]
         if font_name == "Times":
             font_name = "Times New Roman"
+        elif font_name == "Comic Sans":
+            font_name = "Comic Sans MS"
 
         kerning = data["Kerning"]
         print("\nfont: " + font_name + "\n")
