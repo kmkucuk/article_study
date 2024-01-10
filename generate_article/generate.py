@@ -51,22 +51,22 @@ def get_header_pos(header_indices):
 
     for header_position in header_indices:
         pos = []
-        if header_position == 0:
+        if header_position == 0:  # Blue Box
             pos = [
                 indent_from_robot * 1.1,
                 previous_pos[1] + roundPosition(size_blueRect[1] * 0.8),
             ]
-        elif header_position == 1:
+        elif header_position == 1:  # Title
             pos = [
                 indent_from_robot * 1,
-                previous_pos[1] + roundPosition(size_blueRect[1] * 1.2),
+                previous_pos[1] + roundPosition(size_blueRect[1] * 1.05),
             ]
-        elif header_position == 2:
+        elif header_position == 2:  # Subtitle
             pos = [
                 indent_from_robot * 1,
                 roundPosition(previous_pos[1] + size_blueRect[1] * 0.55),
             ]
-        else:
+        else:  # Shouldn't happen
             pos = [
                 indent_from_robot * 1,
                 roundPosition(previous_pos[1] + size_blueRect[1]),
@@ -142,8 +142,8 @@ def generate(article_info: ArticleInfo):
                 last_header = header_postions[-1]
 
                 date_position = [
-                    roundPosition(robot_start),
-                    roundPosition(last_header[1] * 1.15),
+                    roundPosition(indent_from_robot),
+                    roundPosition(last_header[1] * 1.2),
                 ]
 
                 for draw in [draw_without_links, draw_with_links]:
@@ -161,7 +161,7 @@ def generate(article_info: ArticleInfo):
                     draw.pop()
 
                 author_position = [
-                    roundPosition(date_position[0] * 1.2),
+                    roundPosition(date_position[0]),
                     roundPosition(date_position[1] * 1.1),
                 ]
 

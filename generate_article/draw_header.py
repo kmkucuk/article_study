@@ -43,16 +43,14 @@ def draw_header(
         x_position = header_position[0]
 
         if index == 0:
-            draw.font_size = 30
+            draw.font_size = 28
             draw.font_family = "Arial Narrow"
         elif index == 1:
-            draw.font_size = 30
+            draw.font_size = 28
             draw.font_family = "Times New Roman"
-            x_position = center_text(draw, image, currentHeader)
         else:
             draw.font_size = 22
             draw.font_family = "Times New Roman"
-            x_position = center_text(draw, image, currentHeader)
 
         # assign letter spacing
         draw.text_kerning = 0
@@ -66,7 +64,7 @@ def draw_header(
         draw.font_weight = int(str(article_sheet["weight"][location]))
 
         draw.text(
-            roundPosition(x_position),
+            roundPosition(header_position[0]),
             roundPosition(header_position[1]),
             currentHeader,
         )
