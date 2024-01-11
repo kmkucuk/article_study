@@ -59,7 +59,7 @@ def get_header_pos(header_indices):
         elif header_position == 1:  # Title
             pos = [
                 indent_from_robot * 1,
-                previous_pos[1] + roundPosition(size_blueRect[1] * 1.05),
+                previous_pos[1] + roundPosition(size_blueRect[1] * 0.8),
             ]
         elif header_position == 2:  # Subtitle
             pos = [

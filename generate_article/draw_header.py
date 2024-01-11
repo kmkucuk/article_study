@@ -40,8 +40,6 @@ def draw_header(
         currentHeader = article_sheet["content"][location]
         # assign font size
 
-        x_position = header_position[0]
-
         if index == 0:
             draw.font_size = 28
             draw.font_family = "Arial Narrow"
