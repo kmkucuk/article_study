@@ -33,6 +33,7 @@ def draw_text(image, draw, article_info, text_position, has_links) -> list:
         evaluating_bracket = False
         current_link_bounds = []
         underlined_words = []
+
         for texti in range(0, num_words):
             currentWord = split_text[texti].strip()
 
@@ -45,17 +46,16 @@ def draw_text(image, draw, article_info, text_position, has_links) -> list:
                     continue
 
             if evaluating_bracket:
-                             
                 current_color = "blue"
                 if "]" in currentWord:
                     currentWord = currentWord.replace("]", "")
-                    
+
                     evaluating_bracket = False
                     # if the bracket is empty, skip it
                     if len(currentWord.strip()) == 0:
                         continue
-                    
-                # add this word to the underlined word list   
+
+                # add this word to the underlined word list
                 underlined_words.append(currentWord)
             else:
                 current_color = "black"
@@ -87,6 +87,14 @@ def draw_text(image, draw, article_info, text_position, has_links) -> list:
 
                 text_position[1] += roundPosition(word_height * 1.09)
 
+                if (
+                    current_color == "blue" and len(current_link_bounds) > 0
+                ):  # Can be skipped if list is empty as we will handle later
+                    current_link_bounds[3].append(word_width)
+
+                    current_link_bounds[1].append(text_position[0])
+                    current_link_bounds[2].append(text_position[1])
+
             partext = str(((parit / howManyParagraphs) * 100) // 1)
             wordtext = str((((texti + 1) / num_words) * 100) // 1)
             print(
@@ -104,36 +112,39 @@ def draw_text(image, draw, article_info, text_position, has_links) -> list:
                 if evaluating_bracket:
                     # initialize underlined word text metrics for the first word after [
                     if len(current_link_bounds) < 1:
-                        current_link_bounds  =  [
-                                            [],
-                                            text_position[0],  # type: ignore
-                                            text_position[1],
-                                            word_width,
-                                            word_height,
-                                        ]
+                        current_link_bounds = [
+                            "",
+                            [text_position[0]],
+                            [text_position[1]],
+                            [word_width],
+                            word_height,
+                        ]
                     else:
-                         # sum the words and the word widths for multiple underlined words
-                         current_link_bounds[3] = current_link_bounds[3]+word_width+spaceLength
+                        # sum the words and the word widths for multiple underlined words
+                        current_link_bounds[3][-1] = (
+                            current_link_bounds[3][-1] + word_width + spaceLength
+                        )
 
                 else:
-
                     # initialize underlined word text metrics for the first word after [
+                    # Can happen when there is a single underlined word
                     if len(current_link_bounds) < 1:
-                        current_link_bounds  =  [
-                                            currentWord,
-                                            text_position[0],  # type: ignore
-                                            text_position[1],
-                                            word_width,
-                                            word_height,
-                                        ]
+                        current_link_bounds = [
+                            currentWord,
+                            [text_position[0]],
+                            [text_position[1]],
+                            [word_width],
+                            word_height,
+                        ]
                     else:
-                         # sum the words and the word widths for multiple underlined words
-                         current_link_bounds[0] = " ".join(underlined_words)
-                         current_link_bounds[3] = current_link_bounds[3]+word_width+spaceLength
+                        # sum the words and the word widths for multiple underlined words
+                        current_link_bounds[0] = " ".join(underlined_words)
+                        current_link_bounds[3][-1] = (
+                            current_link_bounds[3][-1] + word_width + spaceLength
+                        )
 
                     # register  underlined word metrics when algorithm reaches to ] symbol.
-                    link_bounds.append(current_link_bounds
-                    )
+                    link_bounds.append(current_link_bounds)
                     current_link_bounds = []
                     underlined_words = []
 
@@ -144,4 +155,3 @@ def draw_text(image, draw, article_info, text_position, has_links) -> list:
                 text_position[1] += word_height * 1.8
 
     return link_bounds
-
