@@ -83,7 +83,7 @@ def draw_text(image, draw, article_info, text_position, has_links) -> list:
             if text_position[0] + word_width >= wrap_width + page_indent_horizontal:
                 text_position[0] = roundPosition(page_indent_horizontal)
 
-                text_position[1] += roundPosition(word_height * 1.09)
+                text_position[1] += roundPosition(word_height * 1.25)
 
                 if (
                     current_color == "blue" and len(current_link_bounds) > 0

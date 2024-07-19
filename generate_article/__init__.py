@@ -107,7 +107,7 @@ page_indent_horizontal = roundPosition((img_width - (img_width * 0.75)) / 2)
 print(page_indent_horizontal)
 
 # length of text wrapping
-wrap_width = roundPosition(img_width * 0.75) 
+wrap_width = roundPosition(img_width * 0.75)
 
 # top-bottom limit of text (%2.5 for each side)
 page_indent_vertical = roundPosition(img_height / 40)
