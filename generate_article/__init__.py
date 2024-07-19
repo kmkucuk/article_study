@@ -93,17 +93,21 @@ ArticleInfo = namedtuple(
 )
 
 # Create a black canvas img_widthximg_height pixels (1024x768)
-img_width = 1024
+img_width = 1920
 img_height = 1500
 
 img_center_x = roundPosition(img_width / 2)
 img_center_y = roundPosition(img_height / 2)
 
-# left - right indent of text (%2.5 for each side)
-page_indent_horizontal = roundPosition(img_width / 40)
+# ( 1920 - (1920 0.75) ) / 2
+# (1920 - 1440) / 2
+# 480 / 2
+# 240
+page_indent_horizontal = roundPosition((img_width - (img_width * 0.75)) / 2)
+print(page_indent_horizontal)
 
 # length of text wrapping
-wrap_width = roundPosition(img_width - page_indent_horizontal * 2)
+wrap_width = roundPosition(img_width * 0.75) 
 
 # top-bottom limit of text (%2.5 for each side)
 page_indent_vertical = roundPosition(img_height / 40)

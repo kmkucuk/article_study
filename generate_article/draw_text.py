@@ -2,6 +2,7 @@ from generate_article import (
     roundPosition,
     eval_metrics,
     wrap_width,
+    page_indent_horizontal,
 )
 
 from generate_article.draw_robot import indent_from_robot, robot_start_without_indent
@@ -12,8 +13,7 @@ from generate_article.draw_robot import indent_from_robot, robot_start_without_i
 # These ensure that we use the same font sizes (in pix)
 # as we did it in PsychoPy's text components in previous
 # interlude of 3-experiments (Rashid's) study (kurtulusmertkucuk@gmail.com, date: 18/05/2023).
-passageSizeMultiplier = 1.2
-textSizeInPixels = 16
+textSizeInPixels = 20
 
 
 def draw_text(image, draw, article_info, text_position, has_links) -> list:
@@ -66,11 +66,11 @@ def draw_text(image, draw, article_info, text_position, has_links) -> list:
             if not has_links:
                 current_color = "black"
 
-                # adjust the font size
-            current_font_size = textSizeInPixels * passageSizeMultiplier
+            # adjust the font size
+            # current_font_size = textSizeInPixels * passageSizeMultiplier
 
             # assign font size
-            draw.font_size = current_font_size
+            draw.font_size = textSizeInPixels
             # text color
             draw.fill_color = current_color
             # align text to left
@@ -80,10 +80,8 @@ def draw_text(image, draw, article_info, text_position, has_links) -> list:
 
             # add new line if wrap width is exceeded
             # Multiple text width to add extra padding
-            paragraph_right_padding = robot_start_without_indent
-
-            if text_position[0] + paragraph_right_padding >= wrap_width:
-                text_position[0] = roundPosition(robot_start_without_indent)
+            if text_position[0] + word_width >= wrap_width + page_indent_horizontal:
+                text_position[0] = roundPosition(page_indent_horizontal)
 
                 text_position[1] += roundPosition(word_height * 1.09)
 

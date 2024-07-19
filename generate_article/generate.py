@@ -200,7 +200,7 @@ def generate(article_info: ArticleInfo):
                 def _draw_text(draw, image, has_links):
                     draw.push()
                     text_position = [
-                        roundPosition(robot_start_without_indent),
+                        roundPosition(page_indent_horizontal),
                         roundPosition(caption_position[1] * 1.1),
                     ]
 
