@@ -53,22 +53,22 @@ def get_header_pos(header_indices):
         pos = []
         if header_position == 0:  # Blue Box
             pos = [
-                indent_from_robot * 1.1,
+                page_indent_horizontal,
                 previous_pos[1] + roundPosition(size_blueRect[1] * 0.8),
             ]
         elif header_position == 1:  # Title
             pos = [
-                indent_from_robot * 1,
+                page_indent_horizontal,
                 previous_pos[1] + roundPosition(size_blueRect[1] * 0.8),
             ]
         elif header_position == 2:  # Subtitle
             pos = [
-                indent_from_robot * 1,
+                page_indent_horizontal,
                 roundPosition(previous_pos[1] + size_blueRect[1] * 0.55),
             ]
         else:  # Shouldn't happen
             pos = [
-                indent_from_robot * 1,
+                page_indent_horizontal,
                 roundPosition(previous_pos[1] + size_blueRect[1]),
             ]
 
@@ -106,8 +106,8 @@ def generate(article_info: ArticleInfo):
         ) as image_with_links, Image(
             width=img_width, height=img_height, pseudo="xc:white"
         ) as image_without_links:
-            draw_robot(image_with_links, pos_robotLogo)
-            draw_robot(image_without_links, pos_robotLogo)
+            # draw_robot(image_with_links, pos_robotLogo)
+            # draw_robot(image_without_links, pos_robotLogo)
 
             with Drawing() as draw_with_links, Drawing() as draw_without_links:
                 draw_with_links.font_family, draw_without_links.font_family = (
@@ -119,13 +119,10 @@ def generate(article_info: ArticleInfo):
                     kerning,
                 )
 
-                # draw header's blue rectangle
                 draw_header(
                     draw_with_links,
                     image_with_links,
                     article_info,
-                    pos_blueRect,
-                    size_blueRect,
                     header_postions,
                 )
 
@@ -133,8 +130,6 @@ def generate(article_info: ArticleInfo):
                     draw_without_links,
                     image_without_links,
                     article_info,
-                    pos_blueRect,
-                    size_blueRect,
                     header_postions,
                 )
 

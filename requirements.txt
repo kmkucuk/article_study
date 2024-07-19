@@ -2,3 +2,4 @@ wand
 pandas
 numpy
 openpyxl
+black
