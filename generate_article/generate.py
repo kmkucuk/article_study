@@ -22,54 +22,42 @@ from generate_article.draw_text import draw_text
 
 from generate_article.draw_robot import (
     draw_robot,
-    indent_from_robot,
     robot_start_without_indent,
     robot_start,
 )
 
-# Blue header rectangle position
-# rectangle comes after the robot logo and there is a space between them
-size_blueRect = [roundPosition(wrap_width * 0.8), 55]
-pos_blueRect = [
-    indent_from_robot,
-    page_indent_vertical,
-]
 # Robot Logo position
 pos_robotLogo = [page_indent_horizontal, page_indent_vertical]
 
 # Blue header position
-pos_blueHeader = [
-    indent_from_robot,
-    roundPosition(size_blueRect[1] * 2 / 3),
-]
 
 
 def get_header_pos(header_indices):
     header_postions = []
 
-    previous_pos = pos_blueHeader
+    previous_pos = [page_indent_horizontal, page_indent_vertical]
 
     for header_position in header_indices:
         pos = []
         if header_position == 0:  # Blue Box
             pos = [
                 page_indent_horizontal,
-                previous_pos[1] + roundPosition(size_blueRect[1] * 0.8),
+                previous_pos[1],
             ]
         elif header_position == 1:  # Title
             pos = [
                 page_indent_horizontal,
-                previous_pos[1] + roundPosition(size_blueRect[1] * 0.8),
+                roundPosition(previous_pos[1] * 1.8),
             ]
         elif header_position == 2:  # Subtitle
             pos = [
                 page_indent_horizontal,
-                roundPosition(previous_pos[1] + size_blueRect[1] * 0.55),
+                previous_pos[1],
             ]
         else:  # Shouldn't happen
             pos = [
                 page_indent_horizontal,
-                roundPosition(previous_pos[1] + size_blueRect[1]),
+                previous_pos[1],
             ]
 
         previous_pos = pos
@@ -108,8 +96,6 @@ def generate(article_info: ArticleInfo):
         ) as image_with_links, Image(
             width=img_width, height=img_height, pseudo="xc:white", units="pixelsperinch"
         ) as image_without_links:
-            # draw_robot(image_with_links, pos_robotLogo)
-            # draw_robot(image_without_links, pos_robotLogo)
 
             with Drawing() as draw_with_links, Drawing() as draw_without_links:
                 draw_with_links.font_family, draw_without_links.font_family = (
@@ -139,7 +125,7 @@ def generate(article_info: ArticleInfo):
                 last_header = header_postions[-1]
 
                 date_position = [
-                    roundPosition(indent_from_robot),
+                    page_indent_horizontal,
                     roundPosition(last_header[1] * 1.2),
                 ]
 
@@ -192,6 +178,17 @@ def generate(article_info: ArticleInfo):
 
                 draw_photo(draw_with_links, image_with_links)
                 caption_position = draw_photo(draw_without_links, image_without_links)
+
+                ####################
+                ### ROBOT SECTION ##
+                ####################
+
+                robot_position = [
+                    page_indent_horizontal,
+                    int(caption_position[1] * 1.03),
+                ]
+                draw_robot(image_with_links, robot_position)
+                draw_robot(image_without_links, robot_position)
 
                 # draw text
                 def _draw_text(draw, image, has_links):

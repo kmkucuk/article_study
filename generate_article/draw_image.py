@@ -9,7 +9,7 @@ from generate_article import (
     img_width,
 )
 
-from generate_article.draw_robot import indent_from_robot, robot_start
+from generate_article.draw_robot import robot_start
 
 
 def draw_image(image, draw, article_info: ArticleInfo, y_position: float) -> list[int]:
@@ -36,7 +36,7 @@ def draw_image(image, draw, article_info: ArticleInfo, y_position: float) -> lis
             top=photo_position[1],
         )
 
-        caption_position_y = roundPosition(photo_position[1] * 1.16 + photo.height)
+        caption_position_y = roundPosition(photo_position[1] * 1.5 + photo.height)
 
     draw(image)
 

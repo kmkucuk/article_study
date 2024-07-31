@@ -5,7 +5,7 @@ from generate_article import (
     page_indent_horizontal,
 )
 
-from generate_article.draw_robot import indent_from_robot, robot_start_without_indent
+from generate_article.draw_robot import robot_start_without_indent
 
 ###########################
 # !TEXT SIZE MULTIPLIERS! #
