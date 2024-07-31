@@ -16,7 +16,6 @@ def draw_robot(image, pos_robotLogo):
         height=size_robotLogo,
         filename="vrl_robot.png",
     ) as robot:
-        print(robot.height, robot.width, "robot")
         # resize robot logo
         robot.resize(int(size_robotLogo * 1.46), size_robotLogo, blur=1)
 

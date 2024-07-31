@@ -143,22 +143,6 @@ def generate(article_info: ArticleInfo):
 
                 #     draw.pop()
 
-                author_position = [
-                    roundPosition(date_position[0]),
-                    roundPosition(date_position[1] * 1.1),
-                ]
-
-                # for draw in [draw_without_links, draw_with_links]:
-                #     draw.push()
-                #     draw.font_weight = article_sheet["weight"][authorIndex]
-                #     draw.font_family = "Times New Roman"
-                #     draw.font_size = 22
-                #     draw.text(
-                #         author_position[0],
-                #         author_position[1],
-                #         article_sheet["content"][authorIndex],
-                #     )
-
                 draw_with_links(image_with_links)
                 draw_without_links(image_without_links)
 
@@ -189,6 +173,25 @@ def generate(article_info: ArticleInfo):
                 ]
                 draw_robot(image_with_links, robot_position)
                 draw_robot(image_without_links, robot_position)
+
+                author_position = [
+                    roundPosition(robot_position[0] * 1.45),
+                    roundPosition(robot_position[1] * 1.03),
+                ]
+
+                for draw in [draw_without_links, draw_with_links]:
+                    draw.push()
+
+                    draw.font_weight = article_sheet["weight"][authorIndex]
+                    draw.font_family = "Times New Roman"
+                    draw.font_size = 22
+                    draw.text(
+                        author_position[0],
+                        author_position[1],
+                        article_sheet["content"][authorIndex],
+                    )
+
+                    draw.pop()
 
                 # draw text
                 def _draw_text(draw, image, has_links):
