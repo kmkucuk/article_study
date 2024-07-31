@@ -37,7 +37,7 @@ def draw_header(
         # title
         if index == 0:
             draw.font_size = 40
-            draw.font_family = "Apple Chancery"
+            draw.font_family = "Georgia"
         elif index == 1:
             draw.font_size = 23
             draw.font_family = "Times New Roman"

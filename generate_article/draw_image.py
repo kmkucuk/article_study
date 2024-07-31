@@ -5,7 +5,7 @@ from generate_article import ArticleInfo, roundPosition, center_text, eval_metri
 from generate_article.draw_robot import indent_from_robot, robot_start
 
 
-def draw_image(image, draw, article_info: ArticleInfo, y_position) -> list[int]:
+def draw_image(image, draw, article_info: ArticleInfo, y_position: float) -> list[int]:
     """
     Draws an image on the article sheet.
     Returns the height of the image.
@@ -21,8 +21,9 @@ def draw_image(image, draw, article_info: ArticleInfo, y_position) -> list[int]:
 
     photo_height = 0
 
+    img_width = 600
     with Image(filename=article_sheet["content"][photoIndex]) as photo:
-        photo.resize(525, 296)
+        photo.resize(int(img_width * 1.8), img_width)
 
         photo_height = photo.height
         image.composite(

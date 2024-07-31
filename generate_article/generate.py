@@ -88,7 +88,7 @@ def generate(article_info: ArticleInfo):
     dateIndex = article_info.dateIndex
     authorIndex = article_info.authorIndex
 
-    header_postions = get_header_pos(article_info.headerIndices)
+    header_postions: list[list[float]] = get_header_pos(article_info.headerIndices)
 
     for _, data in font_sheet.iterrows():
         font_name = data["Font"]
@@ -183,7 +183,7 @@ def generate(article_info: ArticleInfo):
                 def draw_photo(draw, image):
                     draw.push()
                     caption_position = draw_image(
-                        image, draw, article_info, author_position[1] * 1.1
+                        image, draw, article_info, header_postions[1][1] * 1.3
                     )
                     draw(image)
                     draw.pop()
