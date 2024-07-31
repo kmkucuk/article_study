@@ -97,7 +97,7 @@ ArticleInfo = namedtuple(
 
 # Create a black canvas img_widthximg_height pixels (1024x768)
 img_width = 1920
-img_height = 1500
+img_height = 1900
 
 img_center_x = roundPosition(img_width / 2)
 img_center_y = roundPosition(img_height / 2)

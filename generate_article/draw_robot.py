@@ -4,7 +4,7 @@ from generate_article import roundPosition, wrap_width, page_indent_horizontal
 from wand.image import Image
 
 
-size_robotLogo = 80
+size_robotLogo = 70
 
 robot_start = roundPosition(page_indent_horizontal + size_robotLogo / 2)
 robot_start_without_indent = robot_start

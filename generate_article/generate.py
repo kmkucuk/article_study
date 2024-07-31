@@ -121,28 +121,6 @@ def generate(article_info: ArticleInfo):
                     header_postions,
                 )
 
-                # draw date
-                last_header = header_postions[-1]
-
-                date_position = [
-                    page_indent_horizontal,
-                    roundPosition(last_header[1] * 1.2),
-                ]
-
-                # for draw in [draw_without_links, draw_with_links]:
-                #     draw.push()
-
-                #     draw.font_weight = article_sheet["weight"][dateIndex]
-                #     draw.font_family = "Roboto"
-                #     draw.font_size = 20
-                #     draw.text(
-                #         date_position[0],
-                #         date_position[1],
-                #         article_sheet["content"][dateIndex],
-                #     )
-
-                #     draw.pop()
-
                 draw_with_links(image_with_links)
                 draw_without_links(image_without_links)
 
@@ -184,11 +162,30 @@ def generate(article_info: ArticleInfo):
 
                     draw.font_weight = article_sheet["weight"][authorIndex]
                     draw.font_family = "Times New Roman"
-                    draw.font_size = 22
+                    draw.font_size = 15
                     draw.text(
                         author_position[0],
                         author_position[1],
                         article_sheet["content"][authorIndex],
+                    )
+
+                    draw.pop()
+
+                date_position = [
+                    page_indent_horizontal,
+                    roundPosition(author_position[1] * 1.1),
+                ]
+
+                for draw in [draw_without_links, draw_with_links]:
+                    draw.push()
+
+                    draw.font_weight = article_sheet["weight"][dateIndex]
+                    draw.font_family = "Roboto"
+                    draw.font_size = 13
+                    draw.text(
+                        date_position[0],
+                        date_position[1],
+                        article_sheet["content"][dateIndex],
                     )
 
                     draw.pop()
@@ -198,7 +195,7 @@ def generate(article_info: ArticleInfo):
                     draw.push()
                     text_position = [
                         roundPosition(page_indent_horizontal),
-                        roundPosition(caption_position[1] * 1.1),
+                        roundPosition(date_position[1] * 1.05),
                     ]
 
                     link_bounds = draw_text(
