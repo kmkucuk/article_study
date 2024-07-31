@@ -1,7 +1,13 @@
 from wand.color import Color
 from wand.drawing import Drawing
 
-from generate_article import ArticleInfo, eval_metrics, roundPosition, center_text
+from generate_article import (
+    ArticleInfo,
+    eval_metrics,
+    roundPosition,
+    center_text,
+    img_width,
+)
 
 
 def draw_header(
@@ -18,12 +24,19 @@ def draw_header(
         draw.push()
         location = header_indices[index]
         # header text
-        currentHeader = article_sheet["content"][location].strip().split(" ")
+        currentHeader = article_sheet["content"][location]  # .strip().split(" ")
         # assign font size
+
+        word_width, word_height = eval_metrics(
+            currentHeader,
+            draw,
+            image,
+        )
 
         line_height = 1
         # title
         if index == 0:
+            header_position[0] = (img_width / 2) - word_width
             draw.font_size = 40
             draw.font_family = "Apple Chancery"
         elif index == 1:
@@ -44,22 +57,12 @@ def draw_header(
         # adjust font weight
         draw.font_weight = int(str(article_sheet["weight"][location]))
 
-        for i in range(0, len(currentHeader), 3):
-            text = " ".join(currentHeader[i : i + 3])
-            iteration = i / 3
+        print(img_width / 2, word_width, header_position[0])
 
-            word_witdh, word_height = eval_metrics(
-                text,
-                draw,
-                image,
-            )
-
-            draw.text(
-                roundPosition(header_position[0]),
-                roundPosition(
-                    header_position[1] + ((iteration * line_height) * word_height)
-                ),  # add line height for each iteration
-                text,
-            )
-            draw(image)
+        draw.text(
+            roundPosition(header_position[0]),
+            roundPosition(header_position[1]),
+            currentHeader,
+        )
+        draw(image)
         draw.pop()

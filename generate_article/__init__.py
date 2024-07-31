@@ -1,6 +1,9 @@
 from collections import deque, namedtuple
 from pathlib import Path
 
+from wand.display import Image
+from wand.drawing import Drawing
+
 
 def center_text(draw, image, currentHeader):
     return (img_width / 2) - (eval_metrics(currentHeader, draw, image)[0] / 2)
@@ -23,7 +26,7 @@ def roundPosition(pixelCoordinates):
     return int(round(pixelCoordinates))
 
 
-def eval_metrics(txt, draw, image):
+def eval_metrics(txt: str, draw: Drawing, image: Image):
     """Quick helper function to calculate width/height of text."""
     metrics = draw.get_font_metrics(image, txt, False)
     return (metrics.text_width, metrics.text_height)

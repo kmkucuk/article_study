@@ -53,7 +53,7 @@ def get_header_pos(header_indices):
         pos = []
         if header_position == 0:  # Blue Box
             pos = [
-                page_indent_horizontal,
+                0,
                 previous_pos[1] + roundPosition(size_blueRect[1] * 0.8),
             ]
         elif header_position == 1:  # Title
@@ -99,12 +99,14 @@ def generate(article_info: ArticleInfo):
 
         kerning = data["Kerning"]
         print("\nfont: " + font_name + "\n")
+
         with Image(
             width=img_width,
             height=img_height,
-            pseudo="xc:white",  # format="png"
+            pseudo="xc:white",
+            units="pixelsperinch",  # format="png"
         ) as image_with_links, Image(
-            width=img_width, height=img_height, pseudo="xc:white"
+            width=img_width, height=img_height, pseudo="xc:white", units="pixelsperinch"
         ) as image_without_links:
             # draw_robot(image_with_links, pos_robotLogo)
             # draw_robot(image_without_links, pos_robotLogo)
@@ -262,7 +264,8 @@ def generate(article_info: ArticleInfo):
             # A pull request has been made to the wand library
             # to fix this issue
 
-            # display(image)
+            # display(image_with_links)
+            # exit(0)
 
             # print("image finished: ", passageImageName)
 
