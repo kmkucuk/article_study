@@ -36,17 +36,15 @@ def draw_header(
         line_height = 1
         # title
         if index == 0:
-            header_position[0] = (img_width / 2) - word_width
             draw.font_size = 40
             draw.font_family = "Apple Chancery"
         elif index == 1:
-            draw.font_size = 28
+            draw.font_size = 23
             draw.font_family = "Times New Roman"
-            break
         else:
             draw.font_size = 22
             draw.font_family = "Times New Roman"
-            break
+            continue
 
         # assign letter spacing
         draw.text_kerning = 0
@@ -56,8 +54,6 @@ def draw_header(
         draw.font_style = article_sheet["style"][location]
         # adjust font weight
         draw.font_weight = int(str(article_sheet["weight"][location]))
-
-        print(img_width / 2, word_width, header_position[0])
 
         draw.text(
             roundPosition(header_position[0]),

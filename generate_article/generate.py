@@ -53,7 +53,7 @@ def get_header_pos(header_indices):
         pos = []
         if header_position == 0:  # Blue Box
             pos = [
-                0,
+                page_indent_horizontal,
                 previous_pos[1] + roundPosition(size_blueRect[1] * 0.8),
             ]
         elif header_position == 1:  # Title
@@ -143,35 +143,35 @@ def generate(article_info: ArticleInfo):
                     roundPosition(last_header[1] * 1.2),
                 ]
 
-                for draw in [draw_without_links, draw_with_links]:
-                    draw.push()
+                # for draw in [draw_without_links, draw_with_links]:
+                #     draw.push()
 
-                    draw.font_weight = article_sheet["weight"][dateIndex]
-                    draw.font_family = "Roboto"
-                    draw.font_size = 20
-                    draw.text(
-                        date_position[0],
-                        date_position[1],
-                        article_sheet["content"][dateIndex],
-                    )
+                #     draw.font_weight = article_sheet["weight"][dateIndex]
+                #     draw.font_family = "Roboto"
+                #     draw.font_size = 20
+                #     draw.text(
+                #         date_position[0],
+                #         date_position[1],
+                #         article_sheet["content"][dateIndex],
+                #     )
 
-                    draw.pop()
+                #     draw.pop()
 
                 author_position = [
                     roundPosition(date_position[0]),
                     roundPosition(date_position[1] * 1.1),
                 ]
 
-                for draw in [draw_without_links, draw_with_links]:
-                    draw.push()
-                    draw.font_weight = article_sheet["weight"][authorIndex]
-                    draw.font_family = "Times New Roman"
-                    draw.font_size = 22
-                    draw.text(
-                        author_position[0],
-                        author_position[1],
-                        article_sheet["content"][authorIndex],
-                    )
+                # for draw in [draw_without_links, draw_with_links]:
+                #     draw.push()
+                #     draw.font_weight = article_sheet["weight"][authorIndex]
+                #     draw.font_family = "Times New Roman"
+                #     draw.font_size = 22
+                #     draw.text(
+                #         author_position[0],
+                #         author_position[1],
+                #         article_sheet["content"][authorIndex],
+                #     )
 
                 draw_with_links(image_with_links)
                 draw_without_links(image_without_links)
