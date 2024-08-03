@@ -20,16 +20,7 @@ from generate_article.draw_image import draw_image
 
 from generate_article.draw_text import draw_text
 
-from generate_article.draw_robot import (
-    draw_robot,
-    robot_start_without_indent,
-    robot_start,
-)
-
-# Robot Logo position
-pos_robotLogo = [page_indent_horizontal, page_indent_vertical]
-
-# Blue header position
+from generate_article.draw_robot import draw_robot
 
 
 def get_header_pos(header_indices):
@@ -189,6 +180,8 @@ def generate(article_info: ArticleInfo):
                     )
 
                     draw.pop()
+
+                link_bounds = []
 
                 # draw text
                 def _draw_text(draw, image, has_links):

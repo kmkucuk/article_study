@@ -5,8 +5,6 @@ from generate_article import (
     page_indent_horizontal,
 )
 
-from generate_article.draw_robot import robot_start_without_indent
-
 ###########################
 # !TEXT SIZE MULTIPLIERS! #
 ###########################
@@ -149,7 +147,7 @@ def draw_text(image, draw, article_info, text_position, has_links) -> list:
             text_position[0] = roundPosition(word_width + text_position[0])
 
             if texti == num_words - 1:
-                text_position[0] = roundPosition(robot_start_without_indent)
+                text_position[0] = roundPosition(page_indent_horizontal)
                 text_position[1] += word_height * 1.8
 
     return link_bounds
