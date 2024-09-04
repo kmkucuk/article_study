@@ -1,4 +1,8 @@
+from wand.drawing import Drawing
+from wand.image import Image
+
 from generate_article import (
+    ArticleInfo,
     roundPosition,
     eval_metrics,
     wrap_width,
@@ -11,10 +15,16 @@ from generate_article import (
 # These ensure that we use the same font sizes (in pix)
 # as we did it in PsychoPy's text components in previous
 # interlude of 3-experiments (Rashid's) study (kurtulusmertkucuk@gmail.com, date: 18/05/2023).
-textSizeInPixels = 20
+textSizeInPixels = 16
 
 
-def draw_text(image, draw, article_info, text_position, has_links) -> list:
+def draw_text(
+    image: Image,
+    draw: Drawing,
+    article_info: ArticleInfo,
+    text_position: list[float],
+    has_links: bool,
+) -> list:
     textIndices = article_info.textIndices
     article_sheet = article_info.article_sheet
 
@@ -32,6 +42,8 @@ def draw_text(image, draw, article_info, text_position, has_links) -> list:
         current_link_bounds = []
         underlined_words = []
 
+        line = 0
+        _num_words = 0
         for texti in range(0, num_words):
             currentWord = split_text[texti].strip()
 
@@ -44,7 +56,8 @@ def draw_text(image, draw, article_info, text_position, has_links) -> list:
                     continue
 
             if evaluating_bracket:
-                current_color = "blue"
+                # blue link
+                current_color = "#326891"
                 if "]" in currentWord:
                     currentWord = currentWord.replace("]", "")
 
@@ -80,8 +93,15 @@ def draw_text(image, draw, article_info, text_position, has_links) -> list:
             # Multiple text width to add extra padding
             if text_position[0] + word_width >= wrap_width + page_indent_horizontal:
                 text_position[0] = roundPosition(page_indent_horizontal)
-
                 text_position[1] += roundPosition(word_height * 1.25)
+
+                with open(
+                    f"font_metrics/{article_info.passage_name}_font_metrics", "a"
+                ) as f:
+
+                    f.write(f"{parit}, {line}, {_num_words}\n")
+                line += 1
+                _num_words = 0
 
                 if (
                     current_color == "blue" and len(current_link_bounds) > 0
@@ -103,6 +123,7 @@ def draw_text(image, draw, article_info, text_position, has_links) -> list:
                 roundPosition(text_position[1]),
                 currentWord,
             )
+            _num_words += 1
 
             if current_color == "blue":
                 if evaluating_bracket:

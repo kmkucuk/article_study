@@ -1,0 +1,36 @@
+<!doctype html>
+<html>
+
+<head>
+    <link rel="stylesheet" href="/css/index.css" />
+    <link rel="stylesheet" href="/css/{{css}}.css" />
+</head>
+
+<body>
+    <div id="body">
+        <h1>{{title}}</h1>
+
+        <h2>{{subtitle}}</h2>
+
+        <img src="/images/{{photo}}" class="hero-img" />
+
+        <h4 class="img-caption">
+            {{caption}}
+        </h4>
+
+        <div class="author">
+            <img class="robot" src="/images/vrl_robot.png" />
+            <p>By <span>{{author}}</span></p>
+        </div>
+
+        <p class="date">{{date}}</p>
+
+        <article>
+            {{#each body}}
+            <p>{{{this}}}</p>
+            {{/each}}
+        </article>
+    </div>
+</body>
+
+</html>

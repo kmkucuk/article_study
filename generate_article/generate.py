@@ -84,6 +84,7 @@ def generate(article_info: ArticleInfo):
             height=img_height,
             pseudo="xc:white",
             units="pixelsperinch",  # format="png"
+            resolution=(img_width, img_height),
         ) as image_with_links, Image(
             width=img_width, height=img_height, pseudo="xc:white", units="pixelsperinch"
         ) as image_without_links:
