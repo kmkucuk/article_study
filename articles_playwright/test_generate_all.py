@@ -11,9 +11,9 @@ def test_all(page: Page):
                 f = "Times" if font == "Times New Roman" else font
                 l = "Link" if link else "NoLink"
 
-                page.goto(
-                    f"http://localhost:8090/?article={i}&font={font}&links={link}"
-                )
+                url = f"http://localhost:8090/?article={i}&font={font}&links={link}"
+                print(url)
+                page.goto(url)
 
                 if link:
                     with open(f"./output/article{i}_{f}_links.csv", "a") as output:
@@ -31,11 +31,13 @@ def test_all(page: Page):
 
                         for locator in page.get_by_role("link").all():
                             bounding_box = locator.bounding_box()
+                            if bounding_box is None:
+                                continue
                             csv_writer.writerow(
                                 [
                                     locator.inner_text(),
                                     bounding_box.get("x"),
-                                    bounding_box.get("y") + 15.0,
+                                    bounding_box.get("y") + bounding_box.get("height"),
                                     bounding_box.get("width"),
                                     bounding_box.get("height"),
                                 ]
@@ -59,7 +61,7 @@ def test_all(page: Page):
                         "y",
                         "width",
                         "height",
-                        f"{f[0].upper()}{f[1:]}_Y",
+                        f"Open Sans_Y",
                     ]
                 )
 
@@ -71,7 +73,7 @@ def test_all(page: Page):
                         [
                             locator.inner_text(),
                             bounding_box.get("x"),
-                            bounding_box.get("y"),
+                            bounding_box.get("y") + bounding_box.get("height"),
                             bounding_box.get("width"),
                             bounding_box.get("height"),
                         ]
