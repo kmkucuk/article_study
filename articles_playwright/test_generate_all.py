@@ -1,6 +1,15 @@
 from playwright.sync_api import Page
 from time import sleep
 import csv
+import os
+
+try:
+    os.stat("./output")
+
+    for file in os.listdir("./output"):
+        os.remove(f"./output/{file}")
+except FileExistsError as e:
+    os.mkdir("./output")
 
 
 def test_all(page: Page):
@@ -82,3 +91,32 @@ def test_all(page: Page):
         page.screenshot(
             path=f"./output/article7_Open Sans_{link}.jpg", full_page=True, type="jpeg"
         )
+    page.goto("http://localhost:8090/example")
+    page.screenshot(path="./output/teaching_link.jpg", full_page=True, type="jpeg")
+
+    with open(f"./output/teaching_link.csv", "a") as output:
+        csv_writer = csv.writer(output)
+        csv_writer.writerow(
+            [
+                "text",
+                "x",
+                "y",
+                "width",
+                "height",
+                f"Open Sans_Y",
+            ]
+        )
+        for locator in page.get_by_role("link").all():
+            bounding_box = locator.bounding_box()
+            if bounding_box is None:
+                continue
+            csv_writer.writerow(
+                [
+                    locator.inner_text(),
+                    bounding_box.get("x"),
+                    bounding_box.get("y") + bounding_box.get("height"),
+                    bounding_box.get("width"),
+                    bounding_box.get("height"),
+                    0,
+                ]
+            )

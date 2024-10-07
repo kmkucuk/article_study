@@ -92,6 +92,10 @@ app.get('/', (req, res) => {
     res.render("index", input)
 })
 
+app.get('/example', (req, res) => {
+    res.render('example')
+})
+
 app.listen(8090, (output) => {
 
     console.log(output)
